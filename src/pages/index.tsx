@@ -10,7 +10,7 @@ function Home() {
           Today is a day to be remembered
         </h1>
         <p className="text-xl text-center  text-slate-900 mb-6">
-          Create immutable memories to share with your friends and users
+          Mint memories so people can own their stories
         </p>
         <p className="text-center">
           <Button href="/create">

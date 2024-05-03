@@ -51,7 +51,7 @@ function Create() {
           </FormRow>
 
           <FormRow className="mb-5 text-black">
-            <FormLabel htmlFor="image">Image</FormLabel>
+            <FormLabel htmlFor="image">Add Artwork</FormLabel>
             <input
               id="image"
               type="file"
