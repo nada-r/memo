@@ -7,14 +7,14 @@ function Home() {
     <Layout>
       <Container className="mt-20">
         <h1 className="text-6xl font-black text-center text-slate-900 mb-6">
-          Today is a day to be remembered
+          Mint memories so people can own their stories
         </h1>
         <p className="text-xl text-center  text-slate-900 mb-6">
-          Mint memories so people can own their stories
+          Create a drop to share with your friends and users
         </p>
         <p className="text-center">
           <Button href="/create">
-            Create your badge
+            Create new drop
           </Button>
         </p>
       </Container>

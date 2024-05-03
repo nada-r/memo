@@ -18,7 +18,11 @@ function Create() {
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
 
-    setState('sent');
+    const formData = new FormData();
+
+    formData.append('file', file);
+    formData.append('upload_preset', 'test-react-uploads-unsigned');
+    formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY);
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {

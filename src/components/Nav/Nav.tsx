@@ -16,7 +16,7 @@ const Nav = () => {
         <p>
           <Link href="/create">
             <a className="text-md font-medium text-slate-900 hover:text-slate-900 drop-shadow-[0_2px_0px_rgba(255,255,255,1)]">
-              Create your badge
+              Create new drop
             </a>
           </Link>
         </p>
