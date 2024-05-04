@@ -17,6 +17,7 @@ function Create() {
   const [website, setWebsite] = useState("");
   const [badge, setBadge] = useState(0);
   const [image, setFile] = useState(null);
+  const [metadata, setMetadata] = useState("");
 
 
   useEffect(() => {
@@ -25,18 +26,17 @@ function Create() {
     }
   }, [image]);
 
+  useEffect(() => {
+    if (metadata) {
+      console.log("Image is now set:", metadata);
+    }
+  }, [metadata]);
+
 
 
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    let result = await fetch("http://localhost:3001/", {
-      method: "post",
-      body: JSON.stringify({ title, description, website, badge, image }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log('file',image);
+
 
     const jsonData = {
       name: title,
@@ -54,17 +54,28 @@ function Create() {
       body: JSON.stringify(jsonData)
     };
 
-    fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', options)
+    fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
     .then(response => response.json())
     .then(response => {
-      setFile(response.IpfsHash);
-      alert('Image loaded on IPFS successfully!');
+      console.log(response.IpfsHash);
+      setMetadata(response.IpfsHash);
+      alert('Metadata loaded on IPFS successfully!');
     })
     .catch(err => {
       console.error(err);
       alert('Error uploading file!');
     });
+
   
+  await fetch("http://localhost:3001/", {
+      method: "post",
+      body: JSON.stringify({ title, description, website, badge, image, metadata }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log('file',image);
+
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
