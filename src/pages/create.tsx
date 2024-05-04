@@ -55,6 +55,11 @@ function Create() {
           </FormRow>
 
           <FormRow className="mb-5 text-black">
+            <FormLabel htmlFor="message">How many badges would you like to drop?</FormLabel>
+            <InputText id="message" name="message" type="text" />
+          </FormRow>
+
+          <FormRow className="mb-5 text-black">
             <FormLabel htmlFor="image">Add Artwork</FormLabel>
             <input
               id="image"
