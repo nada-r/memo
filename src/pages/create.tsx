@@ -40,7 +40,7 @@ function Create() {
         
         <form className="max-w-md border border-gray-200 rounded p-6 mx-auto" onSubmit={handleOnSubmit}>
           <FormRow className="mb-5 text-black">
-            <FormLabel htmlFor="name">Tile</FormLabel>
+            <FormLabel htmlFor="name">Title</FormLabel>
             <InputText id="name" name="name" type="text" />
           </FormRow>
 
@@ -61,7 +61,7 @@ function Create() {
 
           <FormRow className="mb-5 text-black">
             <FormLabel htmlFor="image">Add Artwork</FormLabel>
-            <input
+            <input  
               id="image"
               type="file"
               name="image"
