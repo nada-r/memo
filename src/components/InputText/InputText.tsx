@@ -1,9 +1,12 @@
+import React from "react";
+
 interface InputTextProps {
   className?: string;
   id?: string;
   name: string;
   type?: "text" | "email" | "number";
   value: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputText = ({
@@ -12,6 +15,7 @@ const InputText = ({
   type = "text",
   name,
   value,
+  onChange,
 }: InputTextProps) => {
   return (
     <input
@@ -20,6 +24,7 @@ const InputText = ({
       type={type}
       name={name}
       value={value}
+      onChange={onChange}
     />
   );
 };

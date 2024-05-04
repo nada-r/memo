@@ -38,10 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var mongoose_1 = require("mongoose");
+var cors = require("cors");
 var Drop_1 = require("../database/models/Drop");
 var app = express();
 var port = 3001;
 app.use(express.json());
+app.use(cors());
 startConnection();
 function startConnection() {
     return __awaiter(this, void 0, void 0, function () {

@@ -12,7 +12,6 @@ function Create() {
    * handleOnSubmit
    */
 
-  const [file, setFile] = useState<File | undefined>();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
@@ -20,13 +19,35 @@ function Create() {
 
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-
-    const formData = new FormData();
+    let result = await fetch("http://localhost:3001/", {
+      method: "post",
+      body: JSON.stringify({ title, description, website, badge }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
-    console.log("file", file);
-    setFile(target.files[0]);
+    const target = e.target as HTMLInputElement;
+    const { name, value } = target;
+
+    switch (name) {
+      case "name":
+        setTitle(value);
+        break;
+      case "description":
+        setDescription(value);
+        break;
+      case "message":
+        setWebsite(value);
+        break;
+      case "badgeCount":
+        setBadge(parseInt(value, 10)); // Convert string to number
+        break;
+      default:
+        break;
+    }
   }
 
   return (
@@ -42,16 +63,23 @@ function Create() {
         >
           <FormRow className="mb-5 text-black">
             <FormLabel htmlFor="name">Title</FormLabel>
-            <InputText id="name" name="name" type="text" value={title} />
+            <InputText
+              id="name"
+              name="name"
+              type="text"
+              value={title}
+              onChange={handleOnChange}
+            />
           </FormRow>
 
           <FormRow className="mb-5 text-black">
-            <FormLabel htmlFor="email">Description</FormLabel>
+            <FormLabel htmlFor="description">Description</FormLabel>
             <InputText
-              id="email"
-              name="email"
-              type="email"
+              id="description"
+              name="description"
+              type="text"
               value={description}
+              onChange={handleOnChange}
             />
           </FormRow>
 
@@ -64,6 +92,7 @@ function Create() {
               name="message"
               type="text"
               value={website}
+              onChange={handleOnChange}
             />
           </FormRow>
 
@@ -76,6 +105,7 @@ function Create() {
               name="badgeCount"
               type="number"
               value={badge}
+              onChange={handleOnChange}
             />
           </FormRow>
 

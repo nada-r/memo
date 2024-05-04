@@ -1,11 +1,13 @@
 import * as express from 'express';
 import { model, connect } from 'mongoose';
+import * as cors from 'cors'
 import { IDrop } from '../database/interface';
 import dropSchema from '../database/models/Drop';
 
 const app = express();
 const port = 3001;
 app.use(express.json());
+app.use(cors());
 startConnection()
 
 async function startConnection() {
