@@ -2,7 +2,7 @@ interface InputTextProps {
   className?: string;
   id?: string;
   name: string;
-  type?: 'text' | 'email';
+  type?: 'text' | 'email' | 'number';
 }
 
 const InputText = ({ id, className = '', type = 'text', name }: InputTextProps) => {
