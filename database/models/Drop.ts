@@ -8,8 +8,8 @@ const dropSchema = new Schema<IDrop>({
     title: { type: String, required: true },
     description: { type: String, required: true },
     website: String,
-    image: String
-
+    image: String,
+    badge: { type: Number, required: true },
 });
 
 export default dropSchema;
