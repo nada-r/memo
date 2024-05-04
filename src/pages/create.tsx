@@ -5,7 +5,7 @@ import FormLabel from "@/components/FormLabel";
 import InputText from "@/components/InputText";
 import Button from "@/components/Button";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Create() {
   /**
@@ -18,6 +18,15 @@ function Create() {
   const [badge, setBadge] = useState(0);
   const [image, setFile] = useState(null);
 
+
+  useEffect(() => {
+    if (image) {
+      console.log("Image is now set:", image);
+    }
+  }, [image]);
+
+
+
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     let result = await fetch("http://localhost:3001/", {
@@ -27,7 +36,35 @@ function Create() {
         "Content-Type": "application/json",
       },
     });
-    console.log('file',file);
+    console.log('file',image);
+
+    const jsonData = {
+      name: title,
+      image: image,
+    };
+
+    console.log('jsonData', jsonData);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        "Authorization": `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonData)
+    };
+
+    fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', options)
+    .then(response => response.json())
+    .then(response => {
+      setFile(response.IpfsHash);
+      alert('Image loaded on IPFS successfully!');
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error uploading file!');
+    });
+  
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
