@@ -8,5 +8,6 @@ var dropSchema = new Schema({
     website: String,
     image: String,
     badge: { type: Number, required: true },
+    metadata: { type: String, required: true }
 });
 exports.default = dropSchema;

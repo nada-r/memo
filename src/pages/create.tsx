@@ -26,11 +26,37 @@ function Create() {
     }
   }, [image]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (metadata) {
       console.log("Metadata is now set:", metadata);
     }
-  }, [metadata]);
+  }, [metadata]);*/
+
+  useEffect(() => {
+    if (metadata) {
+      (async () => {
+        try {
+          const response = await fetch("http://localhost:3001/", {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title, description, website, badge, image, metadata }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to save to database');
+          }
+
+          const result = await response.json();
+          console.log('Data saved:', result);
+        } catch (error) {
+          console.error('Error during fetch:', error);
+        }
+      })();
+      console.log('metadata in db', metadata);
+    }
+  }, [metadata]); 
 
 
 
@@ -60,6 +86,7 @@ function Create() {
     .then(response => {
       console.log(response.IpfsHash);
       setMetadata(response.IpfsHash);
+      console.log('metadata', metadata);
       alert('Metadata loaded on IPFS successfully!');
     })
     .catch(err => {
@@ -67,6 +94,9 @@ function Create() {
       alert('Error uploading file!');
     });
 
+  /*// Ensure metadata state update has been processed before proceeding
+  await new Promise(resolve => setTimeout(resolve, 0));
+  console.log('metadata', metadata);
   
   await fetch("http://localhost:3001/", {
       method: "post",
@@ -75,7 +105,7 @@ function Create() {
         "Content-Type": "application/json",
       },
     });
-    console.log('metadata in db',metadata);
+    console.log('metadata in db',metadata);*/
 
   }
 
