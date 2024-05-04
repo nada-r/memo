@@ -45,8 +45,8 @@ function Create() {
           </FormRow>
 
           <FormRow className="mb-5 text-black">
-            <FormLabel htmlFor="email">Description</FormLabel>
-            <InputText id="email" name="email" type="email" />
+            <FormLabel htmlFor="description">Description</FormLabel>
+            <InputText id="description" name="description" type="text" />
           </FormRow>
           
           <FormRow className="mb-5 text-black">
