@@ -16,6 +16,7 @@ function Create() {
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
   const [badge, setBadge] = useState(0);
+  const [file, setFile] = useState(null);
 
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -45,6 +46,49 @@ function Create() {
       case "badgeCount":
         setBadge(parseInt(value, 10)); // Convert string to number
         break;
+        case "image":
+          const selectedFile = e.target.files[0];
+          console.log(selectedFile);
+          setFile(selectedFile); // Update state for other uses, but use selectedFile for immediate action
+        
+          const uploadFileToIPFS = () => {
+            if (!selectedFile) {
+              alert('Please select a file first!');
+              return;
+            }
+            const form = new FormData();
+            form.append("file", selectedFile);
+            form.append("pinataMetadata", JSON.stringify({ name: selectedFile.name }));
+            form.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
+        
+            const options = {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+              },
+              body: form
+            };
+        
+            for (var pair of form.entries()) {
+              console.log(pair[0]+ ', ' + pair[1]); 
+            }
+        
+            fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', options)
+              .then(response => response.json())
+              .then(response => {
+                console.log(response);
+                alert('File uploaded successfully!');
+              })
+              .catch(err => {
+                console.error(err);
+                alert('Error uploading file!');
+              });
+          };
+        
+          // Call the function to execute the upload
+          uploadFileToIPFS();
+        
+          break;
       default:
         break;
     }
