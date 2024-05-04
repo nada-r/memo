@@ -3,5 +3,7 @@ export interface IDrop {
     description: string;
     website: string;
     image: string,
-    badge: number
+    badge: number,
+    metadata: string,
 }
+

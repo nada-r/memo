@@ -10,6 +10,7 @@ const dropSchema = new Schema<IDrop>({
     website: String,
     image: String,
     badge: { type: Number, required: true },
+    metadata: { type: String, required: true }
 });
 
 export default dropSchema;
