@@ -28,7 +28,7 @@ function Create() {
 
   useEffect(() => {
     if (metadata) {
-      console.log("Image is now set:", metadata);
+      console.log("Metadata is now set:", metadata);
     }
   }, [metadata]);
 
@@ -40,6 +40,7 @@ function Create() {
 
     const jsonData = {
       name: title,
+      description: description,
       image: image,
     };
 
@@ -74,7 +75,7 @@ function Create() {
         "Content-Type": "application/json",
       },
     });
-    console.log('file',image);
+    console.log('metadata in db',metadata);
 
   }
 
