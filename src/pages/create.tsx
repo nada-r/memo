@@ -79,6 +79,7 @@ function Create() {
               console.error("Error minting NFT:", error);
             }
           }
+          window.location.href = "/collect";
 
           xrplClient.disconnect();
         } catch (error) {
