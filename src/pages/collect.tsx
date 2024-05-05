@@ -56,6 +56,8 @@ function Collect() {
               />
             </FormRow>
             <Button className="w-full bg-grey-500 hover:bg-black-700 text-white font-bold py-2 px-4 rounded">Claim</Button>
+            <div className="text-center text-2xl my-4">OR</div>
+            <Button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">CLAIM WITH WALLET</Button>
           </form>
         </div>
       </Container>
