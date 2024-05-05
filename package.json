@@ -17,7 +17,8 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
-    "wouter": "^2.11.0"
+    "wouter": "^2.11.0",
+    "xrpl": "^3.0.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.4",

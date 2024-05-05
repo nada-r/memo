@@ -4,6 +4,7 @@ import { Route } from 'wouter';
 
 import Home from '@/pages/index';
 import Create from '@/pages/create';
+import Collect from '@/pages/collect';
 
 import '@/styles/global.css'
 
@@ -12,6 +13,7 @@ const Router = () => {
     <>
       <Route path="/" component={Home} />
       <Route path="/create" component={Create} />
+      <Route path="/collect" component={Collect} />
     </>
   )
 }

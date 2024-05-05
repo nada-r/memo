@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Layout from '@/components/Layout';
 import Container from '@/components/Container';
 import FormRow from '@/components/FormRow';
 import FormLabel from '@/components/FormLabel';
@@ -37,23 +36,30 @@ function Collect() {
   };
 
   return (
-    <Layout>
+    <div className="pt-20">
       <Container>
-        <form onSubmit={handleSubmit} className="max-w-md border border-gray-200 rounded p-6 mx-auto">
-          <FormRow className="mb-5 text-black">
-            <FormLabel htmlFor="inputData">Enter Data:</FormLabel>
-            <InputText
-              id="inputData"
-              name="inputData"
-              type="text"
-              value={inputData}
-              onChange={handleInputChange}
-            />
-          </FormRow>
-          <Button>Send</Button>
-        </form>
+        <div className="flex justify-center">
+          <div className="w-40 h-40 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+            <img src="path_to_image.jpg" alt="Embedded Image" />
+          </div>
+        </div>
+        <div className="pt-20">
+          <form onSubmit={handleSubmit} className="max-w-md border border-gray-200 rounded p-6 mx-auto">
+            <FormRow className="mb-5 text-black">
+              <FormLabel htmlFor="inputData">Enter your email to claim your badge</FormLabel>
+              <InputText
+                id="inputData"
+                name="inputData"
+                type="text"
+                value={inputData}
+                onChange={handleInputChange}
+              />
+            </FormRow>
+            <Button className="w-full bg-grey-500 hover:bg-black-700 text-white font-bold py-2 px-4 rounded">Claim</Button>
+          </form>
+        </div>
       </Container>
-    </Layout>
+    </div>
   );
 }
 
