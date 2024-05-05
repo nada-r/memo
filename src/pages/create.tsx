@@ -8,9 +8,6 @@ import Button from "@/components/Button";
 import { useState, useEffect } from "react";
 
 function Create() {
-  /**
-   * handleOnSubmit
-   */
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -25,12 +22,6 @@ function Create() {
       console.log("Image is now set:", image);
     }
   }, [image]);
-
-  /*useEffect(() => {
-    if (metadata) {
-      console.log("Metadata is now set:", metadata);
-    }
-  }, [metadata]);*/
 
   useEffect(() => {
     if (metadata) {
@@ -59,10 +50,8 @@ function Create() {
   }, [metadata]); 
 
 
-
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-
 
     const jsonData = {
       name: title,
@@ -94,19 +83,6 @@ function Create() {
       alert('Error uploading file!');
     });
 
-  /*// Ensure metadata state update has been processed before proceeding
-  await new Promise(resolve => setTimeout(resolve, 0));
-  console.log('metadata', metadata);
-  
-  await fetch("http://localhost:3001/", {
-      method: "post",
-      body: JSON.stringify({ title, description, website, badge, image, metadata }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log('metadata in db',metadata);*/
-
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
@@ -127,7 +103,7 @@ function Create() {
         setBadge(parseInt(value, 10));
         break;
       case "image":
-        const selectedFile = e.target.files[0];
+        const selectedFile = (e.target as HTMLInputElement).files![0];
         setFile(selectedFile);
       
         const uploadFileToIPFS = () => {
