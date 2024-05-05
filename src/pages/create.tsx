@@ -164,7 +164,7 @@ function Create() {
           fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", options)
             .then((response) => response.json())
             .then((response) => {
-              setFile(response.IpfsHash);
+              setFile(`ipfs://${response.IpfsHash}`);
               alert("Image loaded on IPFS successfully!");
             })
             .catch((err) => {
