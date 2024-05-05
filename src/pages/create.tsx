@@ -4,7 +4,7 @@ import FormRow from "@/components/FormRow";
 import FormLabel from "@/components/FormLabel";
 import InputText from "@/components/InputText";
 import Button from "@/components/Button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Client,
   Wallet,
