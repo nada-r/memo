@@ -86,7 +86,7 @@ function Create() {
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
-    const target = e.target as HTMLInputElement;
+    const target = e.currentTarget; // Changed from e.target to e.currentTarget
     const { name, value } = target;
 
     switch (name) {
@@ -103,40 +103,38 @@ function Create() {
         setBadge(parseInt(value, 10));
         break;
       case "image":
-        const selectedFile = (e.target as HTMLInputElement).files![0];
-        setFile(selectedFile);
-      
-        const uploadFileToIPFS = () => {
-          if (!selectedFile) {
-            alert('Please select a file first!');
-            return;
-          }
-          const form = new FormData();
-          form.append("file", selectedFile);
-          form.append("pinataMetadata", JSON.stringify({ name: selectedFile.name }));
-          form.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
-      
-          const options = {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
-            },
-            body: form
+        const selectedFile = target.files ? target.files[0] : null; // Added null check for files
+        if (selectedFile) {
+          setFile(selectedFile);
+        
+          const uploadFileToIPFS = () => {
+            const form = new FormData();
+            form.append("file", selectedFile);
+            form.append("pinataMetadata", JSON.stringify({ name: selectedFile.name }));
+            form.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
+        
+            const options = {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+              },
+              body: form
+            };
+        
+            fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', options)
+              .then(response => response.json())
+              .then(response => {
+                setFile(response.IpfsHash);
+                alert('Image loaded on IPFS successfully!');
+              })
+              .catch(err => {
+                console.error(err);
+                alert('Error uploading file!');
+              });
           };
-      
-          fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', options)
-            .then(response => response.json())
-            .then(response => {
-              setFile(response.IpfsHash);
-              alert('Image loaded on IPFS successfully!');
-            })
-            .catch(err => {
-              console.error(err);
-              alert('Error uploading file!');
-            });
-        };
-      
-        uploadFileToIPFS();
+        
+          uploadFileToIPFS();
+        }
         break;
       default:
         break;
