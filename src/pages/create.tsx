@@ -120,7 +120,7 @@ function Create() {
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
-    const target = e.target as HTMLInputElement;
+    const target = e.currentTarget; // Changed from e.target to e.currentTarget
     const { name, value } = target;
 
     switch (name) {
