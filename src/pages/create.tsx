@@ -4,18 +4,21 @@ import FormRow from "@/components/FormRow";
 import FormLabel from "@/components/FormLabel";
 import InputText from "@/components/InputText";
 import Button from "@/components/Button";
-
 import { useState, useEffect } from "react";
+import {
+  Client,
+  Wallet,
+  convertStringToHex,
+  SubmittableTransaction,
+} from "xrpl";
 
 function Create() {
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
   const [badge, setBadge] = useState(0);
   const [image, setFile] = useState(null);
   const [metadata, setMetadata] = useState("");
-
 
   useEffect(() => {
     if (image) {
@@ -32,23 +35,55 @@ function Create() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ title, description, website, badge, image, metadata }),
+            body: JSON.stringify({
+              title,
+              description,
+              website,
+              badge,
+              image,
+              metadata,
+            }),
           });
 
           if (!response.ok) {
-            throw new Error('Failed to save to database');
+            throw new Error("Failed to save to database");
+          } else {
+            const result = await response.json();
+            console.log("Data saved:", result);
           }
-
-          const result = await response.json();
-          console.log('Data saved:', result);
+          const xrplClient = new Client("wss://s.altnet.rippletest.net:51233");
+          await xrplClient.connect();
+          try {
+            const issuerWallet = Wallet.fromSeed(
+              "sEdVfo37Ttej2jnCyET1xAR2tEn7Kni"
+            );
+            const issuerAddress = issuerWallet.address;
+            const metadataURI = `ipfs://${metadata}`;
+            const transactionBlob: SubmittableTransaction = {
+              TransactionType: "NFTokenMint",
+              Account: issuerAddress,
+              NFTokenTaxon: 0,
+              Flags: 9,
+              URI: convertStringToHex(metadataURI),
+            };
+            const prepared = await xrplClient.autofill(transactionBlob);
+            const signed = issuerWallet.sign(prepared);
+            console.log(signed);
+            const signedTx = await xrplClient.submitAndWait(signed.tx_blob);
+            console.log("NFT minted successfully!");
+            console.log("Transaction hash : " + signedTx.result.hash);
+          } catch (error) {
+            console.error("Error minting NFT:", error);
+          } finally {
+            xrplClient.disconnect();
+          }
         } catch (error) {
-          console.error('Error during fetch:', error);
+          console.error("Error during fetch:", error);
         }
       })();
-      console.log('metadata in db', metadata);
+      console.log("metadata in db", metadata);
     }
-  }, [metadata]); 
-
+  }, [metadata]);
 
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -59,30 +94,29 @@ function Create() {
       image: image,
     };
 
-    console.log('jsonData', jsonData);
+    console.log("jsonData", jsonData);
 
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        "Authorization": `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+        Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(jsonData)
+      body: JSON.stringify(jsonData),
     };
 
-    fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', options)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response.IpfsHash);
-      setMetadata(response.IpfsHash);
-      console.log('metadata', metadata);
-      alert('Metadata loaded on IPFS successfully!');
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error uploading file!');
-    });
-
+    fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", options)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response.IpfsHash);
+        setMetadata(response.IpfsHash);
+        console.log("metadata", metadata);
+        alert("Metadata loaded on IPFS successfully!");
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error uploading file!");
+      });
   }
 
   function handleOnChange(e: React.FormEvent<HTMLInputElement>) {
@@ -105,37 +139,40 @@ function Create() {
       case "image":
         const selectedFile = (e.target as HTMLInputElement).files![0];
         setFile(selectedFile);
-      
+
         const uploadFileToIPFS = () => {
           if (!selectedFile) {
-            alert('Please select a file first!');
+            alert("Please select a file first!");
             return;
           }
           const form = new FormData();
           form.append("file", selectedFile);
-          form.append("pinataMetadata", JSON.stringify({ name: selectedFile.name }));
+          form.append(
+            "pinataMetadata",
+            JSON.stringify({ name: selectedFile.name })
+          );
           form.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
-      
+
           const options = {
-            method: 'POST',
+            method: "POST",
             headers: {
               Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
             },
-            body: form
+            body: form,
           };
-      
-          fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', options)
-            .then(response => response.json())
-            .then(response => {
+
+          fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", options)
+            .then((response) => response.json())
+            .then((response) => {
               setFile(response.IpfsHash);
-              alert('Image loaded on IPFS successfully!');
+              alert("Image loaded on IPFS successfully!");
             })
-            .catch(err => {
+            .catch((err) => {
               console.error(err);
-              alert('Error uploading file!');
+              alert("Error uploading file!");
             });
         };
-      
+
         uploadFileToIPFS();
         break;
       default:
